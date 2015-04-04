@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Profile;
 import com.example.demo.repository.ProfileRepository;
+import com.example.demo.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ public class LoginController {
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    @Autowired
+    private ProfileService profileService;
 
 
 //    @RequestMapping("/")
@@ -40,11 +44,10 @@ public class LoginController {
         return  profile;
     }
 
-    @RequestMapping(value = "/form",method = RequestMethod.POST,produces = "text/plain")
-    public ResponseEntity<Profile> form(@ModelAttribute Profile profile){
+    @RequestMapping(value = "/form",method = RequestMethod.POST)
+    public Profile form(@ModelAttribute Profile profile){
         System.out.println(profile.getFirstName());
-        profileRepository.save(profile);
-        return new ResponseEntity<Profile>(profile, HttpStatus.OK);
+        return profileService.processProfile(profile);
     }
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
